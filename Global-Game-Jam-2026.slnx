@@ -1,0 +1,5 @@
+﻿<Solution>
+  <Project Path="FullscreenEditor.csproj" />
+  <Project Path="SmoothSceneCamera.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+</Solution>
