@@ -5,6 +5,6 @@ using UnityEngine;
 public class MaskData : ScriptableObject
 {
     public Sprite inventory_sprite;
-    public Sprite player_sprite;
+    public Sprite[] player_sprite;
     public Sprite world_sprite;
 }

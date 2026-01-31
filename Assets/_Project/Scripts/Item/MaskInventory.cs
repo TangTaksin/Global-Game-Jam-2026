@@ -14,7 +14,7 @@ public class MaskInventory : MonoBehaviour
 
     InputAction navigateAction;
     InputAction toggleIventoryAction;
-
+    private bool _inputEnabled = true;
 
     void Awake()
     {
@@ -34,6 +34,8 @@ public class MaskInventory : MonoBehaviour
 
     void Init()
     {
+        _maskList.Add(null);
+
         navigateAction = InputSystem.actions.FindAction("Move");
         toggleIventoryAction = InputSystem.actions.FindAction("ToggleInventory");
     }
@@ -51,9 +53,23 @@ public class MaskInventory : MonoBehaviour
     }
 
 
+    public void Enableinput(bool value)
+    {
+        _inputEnabled = value;
+    }
+
     public void ToggleInventory(InputAction.CallbackContext ctx)
     {
+        if (!_inputEnabled)
+            return;
+        
         _isInventoryOpened = !_isInventoryOpened;
+
+        if (!_isInventoryOpened) // closing
+        {
+            // wear selected mask
+
+        }
     }
 
     public void SwitchMask(InputAction.CallbackContext ctx)

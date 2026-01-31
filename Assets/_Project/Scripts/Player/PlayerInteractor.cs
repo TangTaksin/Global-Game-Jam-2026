@@ -9,6 +9,7 @@ public class PlayerInteractor : MonoBehaviour
     List<IInteractable> _interactableList = new List<IInteractable>();
     IInteractable _selectedInteractable;
     int debug_interactable_count;
+    bool _inputEnabled = true;
 
     void Awake()
     {
@@ -29,6 +30,9 @@ public class PlayerInteractor : MonoBehaviour
     {
          DecideSelectedInteractable();
     }
+
+
+    public void Enableinput(bool value) => _inputEnabled = value;
 
 
     void Init()
@@ -80,11 +84,11 @@ public class PlayerInteractor : MonoBehaviour
     
     void OnInteractInput(InputAction.CallbackContext context)
     {
-        print("attempting to interact");
-        
+        if (!_inputEnabled)
+            return;
+
         if (_selectedInteractable != null)
         {
-            print("interaction successful!");
             _selectedInteractable.Interact(this);
         }
     }

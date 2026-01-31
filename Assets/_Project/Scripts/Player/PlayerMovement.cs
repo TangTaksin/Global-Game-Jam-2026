@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float baseSpeed = 5f;
     float direction;
     public float CurrentDirection => direction;
+    bool _inputEnabled = true;
 
 
     void Awake()
@@ -35,8 +36,20 @@ public class PlayerMovement : MonoBehaviour
         moveAction.canceled += OnMoveInput;
     }
 
+    public void Enableinput(bool value)
+    {
+        _inputEnabled = value;
+
+        if (!_inputEnabled)
+        {
+            direction = 0;
+        }
+    }
+
     void OnMoveInput(InputAction.CallbackContext context)
     {
+         if (!_inputEnabled)
+            return;
         direction = context.ReadValue<float>();
     }
 
@@ -53,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     {
         MovementProcess();
     }
+
 
     private void OnDisable()
     {
