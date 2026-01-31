@@ -110,7 +110,7 @@ public class MaskAnim2D : MonoBehaviour
     {
         if (!sr) return;
 
-        if (mask == null || mask.sprite == null)
+        if (mask == null || mask.player_sprite == null)
         {
             sr.enabled = false;
             sr.sprite = null;
@@ -119,7 +119,7 @@ public class MaskAnim2D : MonoBehaviour
         }
 
         sr.enabled = true;
-        sr.sprite = mask.sprite;
+        sr.sprite = mask.player_sprite;
 
         StartBob();
     }
