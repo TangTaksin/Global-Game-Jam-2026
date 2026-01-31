@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57bba2ea0427969468046118650d9f67, type: 3}
-  m_Name: Mask 2
+  m_Name: Mask 0
   m_EditorClassIdentifier: Assembly-CSharp::MaskData
-  name_mask: Mask2
-  inventory_sprite: {fileID: 3826254897565412905, guid: 4ea15318d991a91429b2b0fe3eeb99cf, type: 3}
-  player_sprite: {fileID: 3826254897565412905, guid: 4ea15318d991a91429b2b0fe3eeb99cf, type: 3}
-  world_sprite: {fileID: 3826254897565412905, guid: 4ea15318d991a91429b2b0fe3eeb99cf, type: 3}
+  name_mask: A Mask
+  inventory_sprite: {fileID: 21300000, guid: d57399a0e0a46114f888d06da751e4b5, type: 3}
+  player_sprite: {fileID: 0}
+  world_sprite: {fileID: 0}

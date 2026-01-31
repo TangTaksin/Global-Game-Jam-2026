@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class UIInventoryCarousel : MonoBehaviour
 {
     [Header("Follow Settings")]
@@ -28,7 +29,7 @@ public class UIInventoryCarousel : MonoBehaviour
     private Camera mainCamera;
     private float targetAlpha;
     private List<MaskData> cachedMaskData;
-    
+
     // Cache slot canvas groups to avoid GetComponent calls
     private CanvasGroup leftSlotCG;
     private CanvasGroup centerSlotCG;
@@ -41,7 +42,7 @@ public class UIInventoryCarousel : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
-        
+
         if (canvasGroup == null)
             canvasGroup = GetComponent<CanvasGroup>();
 
@@ -165,9 +166,9 @@ public class UIInventoryCarousel : MonoBehaviour
         int right = WrapIndex(center + 1, count);
 
         // Update slot icons
-        UpdateSlotIcon(leftSlot, cachedMaskData[left]);
-        UpdateSlotIcon(centerSlot, cachedMaskData[center]);
-        UpdateSlotIcon(rightSlot, cachedMaskData[right]);
+        SetData(leftSlot, cachedMaskData[left]);
+        SetData(centerSlot, cachedMaskData[center]);
+        SetData(rightSlot, cachedMaskData[right]);
 
         // Update slot alpha
         float leftAlpha = dimSideSlots ? sideAlpha : 1f;
@@ -180,19 +181,22 @@ public class UIInventoryCarousel : MonoBehaviour
 
     private void ApplyEmptySlots()
     {
-        UpdateSlotIcon(leftSlot, null);
-        UpdateSlotIcon(centerSlot, null);
-        UpdateSlotIcon(rightSlot, null);
+
+        SetData(leftSlot, null);
+        SetData(centerSlot, null);
+        SetData(rightSlot, null);
 
         SetSlotAlpha(leftSlotCG, 0f);
         SetSlotAlpha(centerSlotCG, 0f);
         SetSlotAlpha(rightSlotCG, 0f);
     }
 
-    private void UpdateSlotIcon(MaskSlotUI slot, MaskData data)
+    private void SetData(MaskSlotUI slot, MaskData data)
     {
-        if (slot != null)
-            slot.SetIcon(data?.inventory_sprite);
+        if (slot == null) return;
+
+        slot.SetData(data?.inventory_sprite, data?.name_mask);
+
     }
 
     private void CacheSlotCanvasGroups()

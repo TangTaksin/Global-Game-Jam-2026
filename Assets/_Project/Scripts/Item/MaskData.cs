@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MaskData", menuName = "ScriptableObjects/MaskData")]
 public class MaskData : ScriptableObject
 {
+    public string name_mask;
     public Sprite inventory_sprite;
     public Sprite player_sprite;
     public Sprite world_sprite;

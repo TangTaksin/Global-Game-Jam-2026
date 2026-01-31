@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57bba2ea0427969468046118650d9f67, type: 3}
   m_Name: Mask 1
   m_EditorClassIdentifier: Assembly-CSharp::MaskData
+  name_mask: Mask1
   inventory_sprite: {fileID: 3826254897565412905, guid: 28d950156010d71419ca666f2a4a657b, type: 3}
   player_sprite: {fileID: 3826254897565412905, guid: 28d950156010d71419ca666f2a4a657b, type: 3}
   world_sprite: {fileID: 3826254897565412905, guid: 28d950156010d71419ca666f2a4a657b, type: 3}
