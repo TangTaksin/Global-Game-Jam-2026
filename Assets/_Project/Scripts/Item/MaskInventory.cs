@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 
 public class MaskInventory : MonoBehaviour
 {
-    List<Mask> _maskList = new List<Mask>();
-    public List<Mask> MaskList => _maskList;
+    public List<MaskData> _maskList = new List<MaskData>();
+    public List<MaskData> MaskList => _maskList;
     int _currentMaskIndex;
     public int CurrentMaskIndex => _currentMaskIndex;
 
@@ -34,19 +34,19 @@ public class MaskInventory : MonoBehaviour
 
     void Init()
     {
-        navigateAction = InputSystem.actions.FindAction("Navigate");
+        navigateAction = InputSystem.actions.FindAction("Move");
         toggleIventoryAction = InputSystem.actions.FindAction("ToggleInventory");
     }
 
     void StartListeningForInput()
     {
-        navigateAction.started += SwitchMask;
+        navigateAction.performed += SwitchMask;
         toggleIventoryAction.started += ToggleInventory;
     }
 
     void StopListeningForInput()
     {
-        navigateAction.started -= SwitchMask;
+        navigateAction.performed -= SwitchMask;
         toggleIventoryAction.started -= ToggleInventory;
     }
 
@@ -58,9 +58,11 @@ public class MaskInventory : MonoBehaviour
 
     public void SwitchMask(InputAction.CallbackContext ctx)
     {
+        if (!_isInventoryOpened)
+            return;
 
-        var axis = ctx.ReadValue<Vector2>();
-        _currentMaskIndex += (int) axis.x;
+        var axis = ctx.ReadValue<float>();
+        _currentMaskIndex += (int) axis;
         
         if (_currentMaskIndex > _maskList.Count-1)
         {
@@ -72,12 +74,12 @@ public class MaskInventory : MonoBehaviour
         }
     }
 
-    public void AddMask(Mask mask)
+    public void AddMask(MaskData mask)
     {
         _maskList.Add(mask);
     }
 
-    public void RemoveMask(Mask mask)
+    public void RemoveMask(MaskData mask)
     {
         _maskList.Remove(mask);
     }
