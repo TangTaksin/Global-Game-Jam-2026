@@ -101,19 +101,28 @@ public class RoomManager : MonoBehaviour
         if (player == null || room == null) return;
 
         var sp = room.FindSpawn(spawnId);
-        if (sp != null)
+        if (sp == null) return;
+
+        var rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.position = sp.position;
+        }
+        else
+        {
             player.transform.position = sp.position;
+        }
     }
 
     private IEnumerator UpdateConfinerForRoom(Room room)
     {
         if (room == null || confiner2D == null) yield break;
 
-        // Warm-up frames so newly-activated colliders are ready
         for (int i = 0; i < confinerWarmupFrames; i++)
             yield return null;
 
-        // Find the first PolygonCollider2D inside the room (include inactive children)
         var poly = room.GetComponentInChildren<PolygonCollider2D>(true);
         if (poly == null)
         {
@@ -121,15 +130,21 @@ public class RoomManager : MonoBehaviour
             yield break;
         }
 
-        // Assign & invalidate cache (Cinemachine 3.x needs this)
         confiner2D.BoundingShape2D = poly;
         confiner2D.InvalidateBoundingShapeCache();
 
-        // Wait for bake to complete
-        while (!confiner2D.BoundingShapeIsBaked)
+        // ✅ timeout กันค้าง
+        float timeout = 1.0f;
+        float t = 0f;
+        while (!confiner2D.BoundingShapeIsBaked && t < timeout)
+        {
+            t += Time.deltaTime;
             yield return null;
+        }
 
-        // Force camera to re-evaluate immediately
+        if (!confiner2D.BoundingShapeIsBaked)
+            Debug.LogWarning($"[RoomManager] Confiner bake timeout in room '{room.name}' (continuing).");
+
         if (vcam != null)
             vcam.PreviousStateIsValid = false;
     }
@@ -139,7 +154,7 @@ public class RoomManager : MonoBehaviour
         float t = 0f;
         while (t < fadeTime)
         {
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             fade.alpha = Mathf.Lerp(from, to, t / fadeTime);
             yield return null;
         }

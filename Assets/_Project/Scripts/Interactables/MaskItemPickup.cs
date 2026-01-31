@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MaskItemPickup : MonoBehaviour, IInteractable
@@ -10,9 +11,20 @@ public class MaskItemPickup : MonoBehaviour, IInteractable
     [SerializeField] bool _isInteractable = true;
     public bool isInteractable { get => _isInteractable; set => _isInteractable = value; }
 
+    private SpriteRenderer sr;
+
     void Awake()
     {
-        
+        sr = GetComponent<SpriteRenderer>();
+
+        ApplyWorldSprite();
+    }
+
+    private void ApplyWorldSprite()
+    {
+        if (!sr || _maskData == null) return;
+
+        sr.sprite = _maskData.world_sprite;
     }
 
     public void Interact(object interacter)
