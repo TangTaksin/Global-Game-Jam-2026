@@ -2,82 +2,111 @@ using UnityEngine;
 
 public class PlayerAnim2D : MonoBehaviour
 {
+    public enum AnimState { Idle, Walk }
+
     [Header("Frames")]
     [SerializeField] private Sprite[] idleFrames;
     [SerializeField] private Sprite[] walkFrames;
 
     [Header("FPS")]
-    [SerializeField, Min(1f)] private float idleFps = 6f;
-    [SerializeField, Min(1f)] private float walkFps = 10f;
+    [SerializeField, Min(0.1f)] private float idleFps = 6f;
+    [SerializeField, Min(0.1f)] private float walkFps = 10f;
 
     [Header("Movement detect")]
     [SerializeField] private float walkThreshold = 0.05f;
+
+    [Header("WebGL / Timing")]
+    [Tooltip("กัน dt กระโดด (เช่น alt-tab / browser throttling)")]
+    [SerializeField] private float maxDeltaTime = 0.1f; // 0.05-0.15 แล้วแต่เกม
+
+    [Tooltip("ใช้ unscaledDeltaTime (ไม่โดน timeScale)")]
+    [SerializeField] private bool useUnscaledTime = false;
 
     [Header("Refs (optional)")]
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private PlayerMovement movement;
 
-    private Sprite[] currentFrames;
-    private int frameIndex;
-    private float timer;
+    private AnimState state = AnimState.Idle;
+    private Sprite[] frames;
+    private float fps;
+
+    private double animTime;          // double กัน drift (ดีมากกับ WebGL)
+    private int lastFrameIndex = -1;
+
+    private const float DIR_EPS = 0.01f;
 
     void Awake()
     {
-        if (sr == null) sr = GetComponent<SpriteRenderer>();
-        if (sr == null) sr = GetComponentInChildren<SpriteRenderer>();
+        if (!sr) sr = GetComponent<SpriteRenderer>();
+        if (!sr) sr = GetComponentInChildren<SpriteRenderer>();
+        if (!movement) movement = GetComponentInParent<PlayerMovement>();
 
-        if (movement == null) movement = GetComponentInParent<PlayerMovement>();
-
-        // เริ่มต้นเป็น idle
-        SetClip(idleFrames, true);
+        SetState(AnimState.Idle, resetTime: true);
+        ApplyFrame(0);
     }
 
     void Update()
     {
-        if (sr == null || movement == null) return;
+        if (!sr || !movement) return;
 
         float dir = movement.CurrentDirection;
-        bool isWalking = Mathf.Abs(dir) > walkThreshold;
 
-        // Flip
-        if (Mathf.Abs(dir) > walkThreshold)
+        // Flip เฉพาะตอนมีทิศจริง
+        if (Mathf.Abs(dir) > DIR_EPS)
             sr.flipX = dir < 0f;
 
-        // เลือกคลิป
-        EnsureClip(isWalking ? walkFrames : idleFrames);
+        bool isWalking = Mathf.Abs(dir) > walkThreshold;
+        SetState(isWalking ? AnimState.Walk : AnimState.Idle, resetTime: false);
 
-        // เล่นเฟรม
-        float fps = isWalking ? walkFps : idleFps;
-        if (currentFrames == null || currentFrames.Length == 0) return;
+        float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
 
-        timer += Time.deltaTime;
-        float frameTime = 1f / fps;
+        // WebGL: dt แกว่งบ่อย -> clamp กันกระโดดเฟรม
+        if (dt > maxDeltaTime) dt = maxDeltaTime;
+        if (dt < 0f) dt = 0f;
 
-        while (timer >= frameTime)
+        Tick(dt);
+    }
+
+    private void SetState(AnimState newState, bool resetTime)
+    {
+        if (newState == state && frames != null) return;
+
+        state = newState;
+
+        frames = (state == AnimState.Walk) ? walkFrames : idleFrames;
+        fps = Mathf.Max(0.1f, (state == AnimState.Walk) ? walkFps : idleFps);
+
+        if (resetTime) animTime = 0.0;
+
+        // เปลี่ยนคลิป -> บังคับอัปเดตเฟรมทันที
+        lastFrameIndex = -1;
+
+        if (frames == null || frames.Length == 0)
         {
-            timer -= frameTime;
-            frameIndex = (frameIndex + 1) % currentFrames.Length;
-            sr.sprite = currentFrames[frameIndex];
+            sr.sprite = null;
         }
     }
 
-    private void EnsureClip(Sprite[] frames)
+    private void Tick(float dt)
     {
-        if (currentFrames == frames) return;
-        SetClip(frames, true);
+        if (frames == null || frames.Length == 0) return;
+
+        animTime += dt;
+
+        // ป้องกัน animTime โตไม่สิ้นสุด (ช่วยความเสถียรระยะยาว)
+        double clipLenSec = frames.Length / (double)fps;
+        if (clipLenSec > 0.0 && animTime >= clipLenSec)
+            animTime = animTime % clipLenSec;
+
+        int frameIndex = (int)(animTime * fps) % frames.Length;
+
+        if (frameIndex != lastFrameIndex)
+            ApplyFrame(frameIndex);
     }
 
-    private void SetClip(Sprite[] frames, bool reset)
+    private void ApplyFrame(int index)
     {
-        currentFrames = frames;
-
-        if (reset)
-        {
-            frameIndex = 0;
-            timer = 0f;
-        }
-
-        if (currentFrames != null && currentFrames.Length > 0 && sr != null)
-            sr.sprite = currentFrames[0];
+        lastFrameIndex = index;
+        sr.sprite = frames[index];
     }
 }
