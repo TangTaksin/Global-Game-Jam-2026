@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteractor : MonoBehaviour
 {
+    [Header("UI Settings")]
+    [SerializeField] private CanvasGroup interactUI;
     InputAction interactAction;
 
     List<IInteractable> _interactableList = new List<IInteractable>();
@@ -28,7 +30,22 @@ public class PlayerInteractor : MonoBehaviour
 
     void Update()
     {
-         DecideSelectedInteractable();
+        DecideSelectedInteractable();
+        UpdateUI(); // เพิ่มการเช็คเพื่อเปิด/ปิด U
+    }
+
+    void UpdateUI()
+    {
+        if (interactUI == null) return;
+
+        // ถ้ามีวัตถุที่เลือกได้ และ _inputEnabled เป็น true ให้แสดง UI
+        bool shouldShow = _selectedInteractable != null && _inputEnabled;
+
+        // ปรับค่า Alpha (0 = ปิด, 1 = เปิด)
+        interactUI.alpha = shouldShow ? 1 : 0;
+
+        // ปิดการรับ Raycast ของ UI เมื่อไม่แสดงผล
+        interactUI.blocksRaycasts = shouldShow;
     }
 
 
@@ -37,6 +54,7 @@ public class PlayerInteractor : MonoBehaviour
 
     void Init()
     {
+        interactUI.alpha = 0;
         interactAction = InputSystem.actions.FindAction("Interact");
     }
 
@@ -81,7 +99,7 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
-    
+
     void OnInteractInput(InputAction.CallbackContext context)
     {
         if (!_inputEnabled)
