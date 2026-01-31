@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 306744472}
   - component: {fileID: 306744474}
   - component: {fileID: 306744473}
+  - component: {fileID: 306744476}
   - component: {fileID: 306744470}
   - component: {fileID: 306744475}
   m_Layer: 0
@@ -305,6 +306,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MaskInventory
   _maskList: []
+  _currentMaskIndex: 0
+  _isInventoryOpened: 0
+  navigateActionName: Move
+  toggleInventoryActionName: ToggleInventory
+--- !u!114 &306744476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306744468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91615593e71a9ba44b44d204850ab3b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
+  _pMover: {fileID: 306744470}
+  _pInteracter: {fileID: 1490926991}
+  _mInventory: {fileID: 306744475}
+  debug_normal_state_on_start: 1
 --- !u!1 &363827618
 GameObject:
   m_ObjectHideFlags: 0

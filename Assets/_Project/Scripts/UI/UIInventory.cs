@@ -38,11 +38,11 @@ public class UIInventory : MonoBehaviour
         {
             inventory.OnToggle += OnToggleInventory;
             inventory.OnChanged += Rebuild;              // ✅ Rebuild(List<MaskData>)
-            inventory.OnIndexChanged += RefreshSelection;
+            // inventory.OnIndexChanged += RefreshSelection;
 
             // initial draw
             Rebuild(inventory.MaskList);
-            RefreshSelection(inventory.CurrentMaskIndex);
+            // RefreshSelection(inventory.CurrentMaskIndex);
         }
     }
 
@@ -52,7 +52,7 @@ public class UIInventory : MonoBehaviour
         {
             inventory.OnToggle -= OnToggleInventory;
             inventory.OnChanged -= Rebuild;
-            inventory.OnIndexChanged -= RefreshSelection;
+            // inventory.OnIndexChanged -= RefreshSelection;
         }
     }
 
@@ -143,15 +143,15 @@ public class UIInventory : MonoBehaviour
             var data = datas[i];
 
             slot.SetIcon(data != null ? data.inventory_sprite : null);
-            slot.SetSelected(i == selectedIndex);
+            // slot.SetSelected(i == selectedIndex);
 
             slots.Add(slot);
         }
     }
 
-    private void RefreshSelection(int index)
-    {
-        for (int i = 0; i < slots.Count; i++)
-            slots[i].SetSelected(i == index);
-    }
+    // private void RefreshSelection(int index)
+    // {
+    //     for (int i = 0; i < slots.Count; i++)
+    //         slots[i].SetSelected(i == index);
+    // }
 }
