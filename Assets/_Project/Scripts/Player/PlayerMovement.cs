@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] float baseSpeed = 5f;
     float direction;
+    public float CurrentDirection => direction;
+
 
     void Awake()
     {
@@ -40,12 +42,14 @@ public class PlayerMovement : MonoBehaviour
 
     void MovementProcess()
     {
-        var velo = direction*baseSpeed*Time.deltaTime;
+        var velo = direction*baseSpeed*Time.fixedDeltaTime;
         if (Mathf.Abs(direction) > 0)
             _charBody.position += new Vector2(velo, 0);
+        // Vector2 next = _charBody.position + new Vector2(velo, 0f);
+        // _charBody.MovePosition(next);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         MovementProcess();
     }
