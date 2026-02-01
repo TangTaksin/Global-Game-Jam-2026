@@ -152,7 +152,7 @@ public class MaskInventory : MonoBehaviour
     public void AddMask(MaskData mask)
     {
         if (mask == null) return;
-        if (_maskList.Contains(mask)) return;
+        // if (_maskList.Contains(mask)) return;
 
         _maskList.Add(mask);
         ClampIndex();
