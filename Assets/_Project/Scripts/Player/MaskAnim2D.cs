@@ -59,6 +59,7 @@ public class MaskAnim2D : MonoBehaviour
     private Tween bobTween;
     private Sequence equipSeq;
     private Sequence failSeq;
+    private Vector3 initialLocalPos;
 
 
     private bool facingLeft;
@@ -71,6 +72,8 @@ public class MaskAnim2D : MonoBehaviour
     {
         if (!sr) sr = GetComponent<SpriteRenderer>();
         if (!movement) movement = GetComponentInParent<PlayerMovement>();
+
+        initialLocalPos = transform.localPosition;
 
         ApplyMask(currentMask);
 
@@ -177,15 +180,16 @@ public class MaskAnim2D : MonoBehaviour
     {
         if (!sr) return;
 
-        StopAllTweens(); // หยุด bob / equip
-
+        // 1. หยุดทุกอย่างและบังคับกลับไปตำแหน่งเริ่มต้นทันทีเพื่อกันตำแหน่งเพี้ยน
+        StopAllTweens();
         failSeq?.Kill();
-
-        Vector3 startPos = transform.localPosition;
-
-        // reset
+        transform.localPosition = initialLocalPos; // Reset ตำแหน่งก่อนเริ่มท่าใหม่
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one;
+
+        // 2. เล่นเสียง
+        if (audioChannel != null && failSfx != null)
+            audioChannel.RaiseSfx(failSfx, 1, 1);
 
         Color c = sr.color;
         c.a = 1f;
@@ -197,49 +201,30 @@ public class MaskAnim2D : MonoBehaviour
         failSeq = DOTween.Sequence();
 
         failSeq
-            // =====================
-            // ⬆ POP ขึ้น
-            // =====================
-            .Append(transform.DOLocalMoveY(startPos.y + popHeight, popTime).SetEase(popEase))
-            .Join(transform.DOLocalRotate(
-                new Vector3(0, spinSpeed * dirSign, 0),
-                popTime,
-                RotateMode.FastBeyond360))
+            // ⬆ POP ขึ้น (อ้างอิงจาก initialLocalPos เสมอ)
+            .Append(transform.DOLocalMoveY(initialLocalPos.y + popHeight, popTime).SetEase(popEase))
+            .Join(transform.DOLocalRotate(new Vector3(0, spinSpeed * dirSign, 0), popTime, RotateMode.FastBeyond360))
 
-            // =====================
             // ⬇ ตกลง
-            // =====================
-            .Append(transform.DOLocalMoveY(startPos.y - 0.25f, fallTime).SetEase(fallEase))
-            .Join(transform.DOLocalRotate(
-                new Vector3(0, spinSpeed * 0.6f * dirSign, 0),
-                fallTime,
-                RotateMode.FastBeyond360))
+            .Append(transform.DOLocalMoveY(initialLocalPos.y - 0.25f, fallTime).SetEase(fallEase))
+            .Join(transform.DOLocalRotate(new Vector3(0, spinSpeed * 0.6f * dirSign, 0), fallTime, RotateMode.FastBeyond360))
 
-            // =====================
             // 💨 fade out
-            // =====================
             .Append(sr.DOFade(0f, fadeTime))
 
-            // =====================
             // ⏳ รอ
-            // =====================
             .AppendInterval(respawnDelay)
 
-            // reset position กลับก่อน fade in
+            // Reset ทุกอย่างกลับค่าเริ่มต้นก่อน Fade In
             .AppendCallback(() =>
             {
-                transform.localPosition = startPos;
+                transform.localPosition = initialLocalPos;
                 transform.localRotation = Quaternion.identity;
             })
 
-            // =====================
             // ✨ fade in กลับมา
-            // =====================
             .Append(sr.DOFade(1f, respawnFadeTime))
 
-            // =====================
-            // กลับมา bob ต่อ
-            // =====================
             .OnComplete(() =>
             {
                 StartBob();
