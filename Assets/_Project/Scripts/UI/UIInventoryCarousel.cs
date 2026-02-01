@@ -26,6 +26,12 @@ public class UIInventoryCarousel : MonoBehaviour
     [SerializeField] private bool dimSideSlots = true;
     [SerializeField][Range(0f, 1f)] private float sideAlpha = 0.55f;
 
+    [Header("Audio SFX")]
+    [SerializeField] private AudioClip openInventorySfx;
+    [SerializeField] private AudioClip closeInventorySfx;
+    [SerializeField] private AudioClip switchSfx;
+    [SerializeField] private AudioEventChannelSO audioChannel;
+
     private Camera mainCamera;
     private float targetAlpha;
     private List<MaskData> cachedMaskData;
@@ -124,10 +130,23 @@ public class UIInventoryCarousel : MonoBehaviour
     private void HandleIndexChanged(int index)
     {
         RefreshSlots(index);
+
+        if (audioChannel != null && switchSfx != null && targetAlpha > 0.5f)
+        {
+            audioChannel.RaiseSfx(switchSfx, 1f, 1f);
+        }
     }
 
     private void HandleToggleInventory(bool isOpen)
     {
+        if (audioChannel != null)
+        {
+            AudioClip clipToPlay = isOpen ? openInventorySfx : closeInventorySfx;
+            if (clipToPlay != null)
+            {
+                audioChannel.RaiseSfx(clipToPlay, 1f, 1f);
+            }
+        }
         if (canvasGroup == null)
         {
             gameObject.SetActive(isOpen);
