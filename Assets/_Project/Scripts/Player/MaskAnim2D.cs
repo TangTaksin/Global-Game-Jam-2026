@@ -149,6 +149,9 @@ public class MaskAnim2D : MonoBehaviour
     {
         equipSeq?.Kill();
 
+        if (audioChannel != null && equipSfx != null)
+            audioChannel.RaiseSfx(equipSfx, 1f, 1f);
+
         float dirSign = facingLeft ? -1f : 1f;
 
         transform.localRotation = Quaternion.identity;
