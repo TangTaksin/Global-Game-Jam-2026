@@ -12,6 +12,15 @@ public class PlayerMovement : MonoBehaviour
     public float CurrentDirection => direction;
     bool _inputEnabled = true;
 
+    [Header("Ground Check")]
+    [SerializeField] Transform _groundCheckPoint;
+    [SerializeField] float _checkRadius = 0.2f;
+    [SerializeField] LayerMask _groundLayer;
+    [SerializeField] float _groundedDelay = 0.15f; // ระยะเวลา Delay (วินาที)
+
+    float _groundCounter; // ตัวนับเวลา
+    bool _isGrounded;
+
 
     void Awake()
     {
@@ -48,14 +57,16 @@ public class PlayerMovement : MonoBehaviour
 
     void OnMoveInput(InputAction.CallbackContext context)
     {
-         if (!_inputEnabled)
+        if (!_inputEnabled)
             return;
         direction = context.ReadValue<float>();
     }
 
     void MovementProcess()
     {
-        var velo = direction*baseSpeed*Time.fixedDeltaTime;
+        if (_groundCounter <= 0) return;
+
+        var velo = direction * baseSpeed * Time.fixedDeltaTime;
         if (Mathf.Abs(direction) > 0)
             _charBody.position += new Vector2(velo, 0);
         // Vector2 next = _charBody.position + new Vector2(velo, 0f);
@@ -64,6 +75,19 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        // 1. เช็คพื้นจริง
+        _isGrounded = Physics2D.OverlapCircle(_groundCheckPoint.position, _checkRadius, _groundLayer);
+
+        // 2. จัดการ Delay Timer
+        if (_isGrounded)
+        {
+            _groundCounter = _groundedDelay; // รีเซ็ตเวลาให้เต็มเมื่อแตะพื้น
+        }
+        else
+        {
+            _groundCounter -= Time.fixedDeltaTime; // ลดเวลาลงเมื่อลอยอยู่กลางอากาศ
+        }
+
         MovementProcess();
     }
 
@@ -77,5 +101,14 @@ public class PlayerMovement : MonoBehaviour
     {
         moveAction.performed -= OnMoveInput;
         moveAction.canceled -= OnMoveInput;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (_groundCheckPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(_groundCheckPoint.position, _checkRadius);
+        }
     }
 }
