@@ -3,18 +3,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MaskTable : MonoBehaviour, IInteractable
+public class PeopleMaskTrigger : MonoBehaviour, IInteractable
 {
-    // --- Enum สำหรับเลือกโหมดการส่งหน้ากาก ---
     public enum InventoryAction { RemoveOnSubmit, KeepInInventory }
+
+    [System.Serializable]
+    public class MaskPhase
+    {
+        public string phaseName = "New Phase";
+        public MaskData[] requiredMasks;
+        public UnityEvent OnPhaseCompleted; // Event เฉพาะของแต่ละชั้น
+    }
 
     [Header("Settings")]
     [SerializeField] private InventoryAction _onSubmitAction = InventoryAction.RemoveOnSubmit;
     [SerializeField] private TextMeshPro reqMaskNumText;
-    [SerializeField] private MaskData[] requiredMasks;
 
-    [Header("Events")]
-    public UnityEvent ConditionMetEvent;
+    [Header("Multi-Phase Configuration")]
+    [SerializeField] private List<MaskPhase> phases = new List<MaskPhase>();
+    private int currentPhaseIndex = 0;
+
+    [Header("Global Events")]
+    public UnityEvent AllPhasesCompletedEvent;
 
     public Vector3 position => transform.position;
 
@@ -26,22 +36,33 @@ public class MaskTable : MonoBehaviour, IInteractable
 
     private int totalRequired = 0;
     private int totalSubmitted = 0;
+    private bool allPhasesFinished = false;
 
     private MaskInventory mask_inv;
-    private bool isCompleted = false;
 
-    void Awake() => Init();
+    void Awake() => InitPhase(0);
 
-    private void Init()
+    // ทำการ Load เงื่อนไขของ Phase ที่กำหนด
+    private void InitPhase(int index)
     {
+        if (phases == null || index >= phases.Count)
+        {
+            allPhasesFinished = true;
+            isInteractable = false;
+            return;
+        }
+
+        currentPhaseIndex = index;
         requiredCount.Clear();
         submittedCount.Clear();
         totalRequired = 0;
         totalSubmitted = 0;
 
-        if (requiredMasks != null)
+        MaskPhase currentPhase = phases[currentPhaseIndex];
+
+        if (currentPhase.requiredMasks != null)
         {
-            foreach (var m in requiredMasks)
+            foreach (var m in currentPhase.requiredMasks)
             {
                 if (m == null) continue;
 
@@ -59,11 +80,9 @@ public class MaskTable : MonoBehaviour, IInteractable
 
     public void Interact(object interacter)
     {
-        // 1. Check ถ้าเสร็จแล้ว หรือโต๊ะ Lock อยู่ ให้หยุดทำงาน
-        if (isCompleted || !isInteractable) return;
+        if (allPhasesFinished || !isInteractable) return;
         if (totalRequired <= 0) return;
 
-        // 2. ดึง MaskInventory จาก Player
         if (mask_inv == null)
         {
             var inter = interacter as PlayerInteractor;
@@ -73,25 +92,22 @@ public class MaskTable : MonoBehaviour, IInteractable
 
         if (mask_inv == null || mask_inv.MaskList == null || mask_inv.MaskList.Count == 0) return;
 
-        // 3. เช็คหน้ากากที่สวมใส่อยู่ปัจจุบัน
         var currentMask = mask_inv.MaskList[mask_inv.CurrentMaskIndex];
         if (currentMask == null) return;
 
-        // ดึง Script Animation ของหน้ากากบนตัวผู้เล่น
         MaskAnim2D maskAnim = mask_inv.GetComponentInChildren<MaskAnim2D>();
 
-        // 4. กรณีหน้ากากไม่ตรงเงื่อนไข (ไม่ใช่ที่ต้องการ หรือส่งชนิดนี้ครบแล้ว)
+        // เช็คเงื่อนไขหน้ากากใน Phase ปัจจุบัน
         if (!requiredCount.ContainsKey(currentMask) || submittedCount[currentMask] >= requiredCount[currentMask])
         {
             if (maskAnim != null) maskAnim.AnimateFailHeadPop();
             return;
         }
 
-        // ✅ 5. กรณีหน้ากากถูกต้อง
+        // ✅ ผ่านเงื่อนไขชิ้นนี้
         submittedCount[currentMask]++;
         totalSubmitted++;
 
-        // จัดการเรื่อง Animation และ Inventory ตาม Enum ที่เลือกไว้
         if (_onSubmitAction == InventoryAction.RemoveOnSubmit)
         {
             if (maskAnim != null) maskAnim.AnimateMaskRemove();
@@ -99,18 +115,38 @@ public class MaskTable : MonoBehaviour, IInteractable
         }
         else
         {
-            // ถ้าเลือกแบบ Keep ให้เล่นท่า Spin (Equip) เพื่อบอกว่าผ่าน
             if (maskAnim != null) maskAnim.Equip(currentMask);
         }
 
         UpdateText();
 
-        // 6. เช็คว่าส่งครบทั้งหมดหรือยัง
+        // ✅ เช็คว่าจบ Phase ปัจจุบันหรือยัง
         if (totalSubmitted >= totalRequired)
         {
-            isCompleted = true;
+            CompleteCurrentPhase();
+        }
+    }
+
+    private void CompleteCurrentPhase()
+    {
+        // รัน Event ของ Phase นั้นๆ (เช่น สั่งให้ ObjectSpawner ทำงาน)
+        phases[currentPhaseIndex].OnPhaseCompleted?.Invoke();
+
+        int nextIndex = currentPhaseIndex + 1;
+
+        if (nextIndex < phases.Count)
+        {
+            // ถ้ายังมี Phase ต่อไป ให้เริ่ม Phase ใหม่
+            Debug.Log($"Phase {currentPhaseIndex} Done! Loading Phase {nextIndex}");
+            InitPhase(nextIndex);
+        }
+        else
+        {
+            // ถ้าหมดทุก Phase แล้ว
+            allPhasesFinished = true;
             isInteractable = false;
-            ConditionMetEvent?.Invoke();
+            AllPhasesCompletedEvent?.Invoke();
+            Debug.Log("All Phases Completed!");
         }
     }
 
