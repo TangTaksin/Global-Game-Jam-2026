@@ -6,6 +6,12 @@ public class MaskAnim2D : MonoBehaviour
     [Header("Refs")]
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private PlayerMovement movement;
+    [SerializeField] private AudioEventChannelSO audioChannel;
+
+    [Header("Clips")]
+    [SerializeField] private AudioClip equipSfx;
+    [SerializeField] private AudioClip failSfx;
+
 
     [Header("Current Mask")]
     [SerializeField] private MaskData currentMask;
@@ -21,31 +27,32 @@ public class MaskAnim2D : MonoBehaviour
     // Rotate Y Equip Animation
     // =============================
     [Header("Rotate Y 360 Equip")]
-    [SerializeField] private float spinDegrees = 360f;
-    [SerializeField] private float spinTime = 0.35f;
-    [SerializeField] private float overshoot = 15f;
-    [SerializeField] private float settleTime = 0.12f;
+    private float spinDegrees = 360f;
+    private float spinTime = 0.35f;
+    private float overshoot = 15f;
+    private float settleTime = 0.12f;
 
-    [SerializeField] private Ease spinEase = Ease.OutCubic;
-    [SerializeField] private Ease settleEase = Ease.OutBack;
+    private Ease spinEase = Ease.OutCubic;
+    private Ease settleEase = Ease.OutBack;
 
 
     // =============================
     // Fail Head Pop
     // =============================
     [Header("Fail Head Pop")]
-    [SerializeField] private float popHeight = 1.2f;
-    [SerializeField] private float popTime = 0.25f;
+    private float popHeight = 1.2f;
+    private float popTime = 0.25f;
 
-    [SerializeField] private float spinSpeed = 720f;
-    [SerializeField] private float fallTime = 0.35f;
+    private float spinSpeed = 720f;
+    private float fallTime = 0.35f;
 
-    [SerializeField] private float fadeTime = 0.15f;
-    [SerializeField] private Ease popEase = Ease.OutQuad;
-    [SerializeField] private Ease fallEase = Ease.InQuad;
+    private float fadeTime = 0.15f;
+    private Ease popEase = Ease.OutQuad;
+    private Ease fallEase = Ease.InQuad;
+
     [Header("Respawn Fade In")]
-    [SerializeField] private float respawnDelay = 0.25f;
-    [SerializeField] private float respawnFadeTime = 0.25f;
+    private float respawnDelay = 0.25f;
+    private float respawnFadeTime = 0.25f;
 
 
 
@@ -103,7 +110,13 @@ public class MaskAnim2D : MonoBehaviour
         ApplyMask(mask);
 
         if (sr && sr.enabled)
+        {
             AnimateSpinY();
+            audioChannel.RaiseSfx(equipSfx, 1, 1);
+        }
+
+
+
     }
 
     private void ApplyMask(MaskData mask)
