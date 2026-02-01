@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57bba2ea0427969468046118650d9f67, type: 3}
   m_Name: Mask 0
   m_EditorClassIdentifier: Assembly-CSharp::MaskData
-  name_mask: A Mask
+  name_mask: UnMask
   inventory_sprite: {fileID: 21300000, guid: d57399a0e0a46114f888d06da751e4b5, type: 3}
   player_sprite: {fileID: 0}
   world_sprite: {fileID: 0}

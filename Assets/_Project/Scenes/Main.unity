@@ -1711,7 +1711,7 @@ Transform:
   m_GameObject: {fileID: 331622063}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.9, y: -13.1, z: 0}
+  m_LocalPosition: {x: 13.9, y: -94.2, z: 0}
   m_LocalScale: {x: 20.1188, y: 5.6900997, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8136,6 +8136,10 @@ PrefabInstance:
       propertyPath: audioChannel
       value: 
       objectReference: {fileID: 11400000, guid: bd2065b24c2a8aa499d4be8e35fef753, type: 2}
+    - target: {fileID: 2232316735410156000, guid: de48cdd5418c8fa47bc4b50cab7fe5f2, type: 3}
+      propertyPath: '_maskList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 031a9905da40eac47893f6110b634763, type: 2}
     - target: {fileID: 4062785410336996827, guid: de48cdd5418c8fa47bc4b50cab7fe5f2, type: 3}
       propertyPath: m_Camera
       value: 
