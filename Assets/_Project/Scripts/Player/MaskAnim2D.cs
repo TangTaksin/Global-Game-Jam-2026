@@ -133,6 +133,7 @@ public class MaskAnim2D : MonoBehaviour
 
         sr.enabled = true;
         sr.sprite = mask.player_sprite;
+        sr.color = Color.white;
 
         StartBob();
     }
@@ -242,6 +243,66 @@ public class MaskAnim2D : MonoBehaviour
             .OnComplete(() =>
             {
                 StartBob();
+            });
+    }
+
+    public void AnimateMaskRemove()
+    {
+        if (!sr) return;
+
+        StopAllTweens(); // หยุด bob / equip
+
+        failSeq?.Kill();
+
+        Vector3 startPos = transform.localPosition;
+
+        // reset
+        transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
+
+        Color c = sr.color;
+        c.a = 1f;
+        sr.color = c;
+        sr.enabled = true;
+
+        float dirSign = facingLeft ? -1f : 1f;
+
+        failSeq = DOTween.Sequence();
+
+        failSeq
+            // =====================
+            // ⬆ POP ขึ้น
+            // =====================
+            .Append(transform.DOLocalMoveY(startPos.y + popHeight, popTime).SetEase(popEase))
+            .Join(transform.DOLocalRotate(
+                new Vector3(0, spinSpeed * dirSign, 0),
+                popTime,
+                RotateMode.FastBeyond360))
+
+            // =====================
+            // ⬇ ตกลง
+            // =====================
+            .Append(transform.DOLocalMoveY(startPos.y - 0.25f, fallTime).SetEase(fallEase))
+            .Join(transform.DOLocalRotate(
+                new Vector3(0, spinSpeed * 0.6f * dirSign, 0),
+                fallTime,
+                RotateMode.FastBeyond360))
+
+            // =====================
+            // 💨 fade out
+            // =====================
+            .Append(sr.DOFade(0f, fadeTime))
+
+            // =====================
+            // ⏳ รอ
+            // =====================
+            .AppendInterval(respawnDelay)
+
+            // reset position กลับก่อน fade in
+            .AppendCallback(() =>
+            {
+                transform.localPosition = startPos;
+                transform.localRotation = Quaternion.identity;
             });
     }
 

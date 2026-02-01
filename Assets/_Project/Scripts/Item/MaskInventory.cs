@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class MaskInventory : MonoBehaviour
 {
+    MaskAnim2D _maskAnim;
+
     [Header("Data")]
     [SerializeField] private List<MaskData> _maskList = new List<MaskData>();
     public List<MaskData> MaskList => _maskList;
@@ -55,6 +57,8 @@ public class MaskInventory : MonoBehaviour
 
     private void Init()
     {
+        _maskAnim = GetComponentInChildren<MaskAnim2D>();
+
         navigateAction = InputSystem.actions.FindAction(navigateActionName);
         toggleInventoryAction = InputSystem.actions.FindAction(toggleInventoryActionName);
 
@@ -120,8 +124,7 @@ public class MaskInventory : MonoBehaviour
         if (_maskList.Count > 0 && _currentMaskIndex < _maskList.Count)
         {
             MaskData selectedMask = _maskList[_currentMaskIndex];
-            var anim = GetComponentInChildren<MaskAnim2D>();
-            if (anim != null) anim.Equip(selectedMask);
+            if (_maskAnim != null) _maskAnim.Equip(selectedMask);
         }
     }
 
@@ -161,6 +164,9 @@ public class MaskInventory : MonoBehaviour
     public void RemoveMask(MaskData mask)
     {
         if (mask == null) return;
+
+        if (mask == MaskList[CurrentMaskIndex])
+                _maskAnim.AnimateMaskRemove();
 
         if (_maskList.Remove(mask))
         {
