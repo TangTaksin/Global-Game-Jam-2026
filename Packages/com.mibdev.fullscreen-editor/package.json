@@ -1,0 +1,8 @@
+{
+  "name": "com.mibdev.fullscreen-editor",
+  "displayName": "Fullscreen Editor",
+  "version": "2.2.10",
+  "unity": "6000.4",
+  "description": "Play, develop, test, and record your game in Fullscreen directly from within the editor.",
+  "type": "tool"
+}
