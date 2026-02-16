@@ -12,7 +12,6 @@ public class MaskAnim2D : MonoBehaviour
     [SerializeField] private AudioClip equipSfx;
     [SerializeField] private AudioClip failSfx;
 
-
     [Header("Current Mask")]
     [SerializeField] private MaskData currentMask;
 
@@ -28,13 +27,12 @@ public class MaskAnim2D : MonoBehaviour
     // =============================
     [Header("Rotate Y 360 Equip")]
     private float spinDegrees = 360f;
-    private float spinTime = 0.35f;
+    private float spinTime = 0.2f; // Reduced duration for smoother animation
     private float overshoot = 15f;
-    private float settleTime = 0.12f;
+    private float settleTime = 0.1f;
 
     private Ease spinEase = Ease.OutCubic;
     private Ease settleEase = Ease.OutBack;
-
 
     // =============================
     // Fail Head Pop
@@ -44,7 +42,7 @@ public class MaskAnim2D : MonoBehaviour
     private float popTime = 0.25f;
 
     private float spinSpeed = 720f;
-    private float fallTime = 0.35f;
+    private float fallTime = 0.3f; // Reduced duration for smoother animation
 
     private float fadeTime = 0.15f;
     private Ease popEase = Ease.OutQuad;
@@ -54,13 +52,10 @@ public class MaskAnim2D : MonoBehaviour
     private float respawnDelay = 0.25f;
     private float respawnFadeTime = 0.25f;
 
-
-
     private Tween bobTween;
     private Sequence equipSeq;
     private Sequence failSeq;
     private Vector3 initialLocalPos;
-
 
     private bool facingLeft;
 
@@ -117,9 +112,6 @@ public class MaskAnim2D : MonoBehaviour
             AnimateSpinY();
             audioChannel.RaiseSfx(equipSfx, 1, 1);
         }
-
-
-
     }
 
     private void ApplyMask(MaskData mask)
@@ -183,16 +175,11 @@ public class MaskAnim2D : MonoBehaviour
     {
         if (!sr) return;
 
-        // 1. หยุดทุกอย่างและบังคับกลับไปตำแหน่งเริ่มต้นทันทีเพื่อกันตำแหน่งเพี้ยน
         StopAllTweens();
         failSeq?.Kill();
-        transform.localPosition = initialLocalPos; // Reset ตำแหน่งก่อนเริ่มท่าใหม่
+        transform.localPosition = initialLocalPos;
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one;
-
-        // 2. เล่นเสียง
-        if (audioChannel != null && failSfx != null)
-            audioChannel.RaiseSfx(failSfx, 1, 1);
 
         Color c = sr.color;
         c.a = 1f;
@@ -204,7 +191,7 @@ public class MaskAnim2D : MonoBehaviour
         failSeq = DOTween.Sequence();
 
         failSeq
-            // ⬆ POP ขึ้น (อ้างอิงจาก initialLocalPos เสมอ)
+            // ⬆ POP ขึ้น
             .Append(transform.DOLocalMoveY(initialLocalPos.y + popHeight, popTime).SetEase(popEase))
             .Join(transform.DOLocalRotate(new Vector3(0, spinSpeed * dirSign, 0), popTime, RotateMode.FastBeyond360))
 
@@ -218,7 +205,7 @@ public class MaskAnim2D : MonoBehaviour
             // ⏳ รอ
             .AppendInterval(respawnDelay)
 
-            // Reset ทุกอย่างกลับค่าเริ่มต้นก่อน Fade In
+            // Reset ก่อน Fade In
             .AppendCallback(() =>
             {
                 transform.localPosition = initialLocalPos;
@@ -238,13 +225,13 @@ public class MaskAnim2D : MonoBehaviour
     {
         if (!sr) return;
 
-        StopAllTweens(); // หยุด bob / equip
+        StopAllTweens();
 
         failSeq?.Kill();
 
         Vector3 startPos = transform.localPosition;
 
-        // reset
+        // Reset
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one;
 
@@ -258,42 +245,33 @@ public class MaskAnim2D : MonoBehaviour
         failSeq = DOTween.Sequence();
 
         failSeq
-            // =====================
             // ⬆ POP ขึ้น
-            // =====================
             .Append(transform.DOLocalMoveY(startPos.y + popHeight, popTime).SetEase(popEase))
             .Join(transform.DOLocalRotate(
                 new Vector3(0, spinSpeed * dirSign, 0),
                 popTime,
                 RotateMode.FastBeyond360))
 
-            // =====================
             // ⬇ ตกลง
-            // =====================
             .Append(transform.DOLocalMoveY(startPos.y - 0.25f, fallTime).SetEase(fallEase))
             .Join(transform.DOLocalRotate(
                 new Vector3(0, spinSpeed * 0.6f * dirSign, 0),
                 fallTime,
                 RotateMode.FastBeyond360))
 
-            // =====================
             // 💨 fade out
-            // =====================
             .Append(sr.DOFade(0f, fadeTime))
 
-            // =====================
             // ⏳ รอ
-            // =====================
             .AppendInterval(respawnDelay)
 
-            // reset position กลับก่อน fade in
+            // Reset ก่อน Fade In
             .AppendCallback(() =>
             {
                 transform.localPosition = startPos;
                 transform.localRotation = Quaternion.identity;
             });
     }
-
 
     // =====================================================
     // Bobbing

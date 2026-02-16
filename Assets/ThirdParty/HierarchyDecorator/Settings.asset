@@ -5465,6 +5465,265 @@ MonoBehaviour:
     customGroups: []
     allCustomComponents:
       name: All
-      components: []
+      components:
+      - displayName: PlayerManager
+        name: PlayerManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: PlayerManager
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: PlayerManager
+          m_TextWithWhitespace: "PlayerManager\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 91615593e71a9ba44b44d204850ab3b8, type: 3}
+        hasToggle: 1
+      - displayName: PlayerMovement
+        name: PlayerMovement, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: PlayerMovement
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: PlayerMovement
+          m_TextWithWhitespace: "PlayerMovement\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 6d1bb59a571c3844e820cb22791fbf5d, type: 3}
+        hasToggle: 1
+      - displayName: MaskInventory
+        name: MaskInventory, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: MaskInventory
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: MaskInventory
+          m_TextWithWhitespace: "MaskInventory\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: fc629801573d6384d9e12d4a515953ed, type: 3}
+        hasToggle: 1
+      - displayName: Room
+        name: Room, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: Room
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: Room
+          m_TextWithWhitespace: "Room\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 2de04ecd19bd5ee4d8ac159b3f87d11b, type: 3}
+        hasToggle: 1
+      - displayName: MaskItemPickup
+        name: MaskItemPickup, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: MaskItemPickup
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: MaskItemPickup
+          m_TextWithWhitespace: "MaskItemPickup\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 0739a9e5ecf640043a0ee77422ace74a, type: 3}
+        hasToggle: 1
+      - displayName: SpawnPoint
+        name: SpawnPoint, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: SpawnPoint
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: SpawnPoint
+          m_TextWithWhitespace: "SpawnPoint\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: c43fcbadf5cee8745a25c90b74092fd6, type: 3}
+        hasToggle: 1
+      - displayName: RoomTrigger2D
+        name: RoomTrigger2D, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: RoomTrigger2D
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: RoomTrigger2D
+          m_TextWithWhitespace: "RoomTrigger2D\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 09d5372ac27173842ad16ecc1c87ddb6, type: 3}
+        hasToggle: 1
+      - displayName: RoomManager
+        name: RoomManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: RoomManager
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: RoomManager
+          m_TextWithWhitespace: "RoomManager\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: aa41a152b95c7c84bb8da7811408bf02, type: 3}
+        hasToggle: 1
+      - displayName: UIInventoryCarousel
+        name: UIInventoryCarousel, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: UIInventoryCarousel
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: UIInventoryCarousel
+          m_TextWithWhitespace: "UIInventoryCarousel\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 2549c69c88600574eb61e7c5e35bc615, type: 3}
+        hasToggle: 1
+      - displayName: PlayerAnim2D
+        name: PlayerAnim2D, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: PlayerAnim2D
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: PlayerAnim2D
+          m_TextWithWhitespace: "PlayerAnim2D\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: f101cecee3b729d4fbf1fd393adede28, type: 3}
+        hasToggle: 1
+      - displayName: MaskAnim2D
+        name: MaskAnim2D, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: MaskAnim2D
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: MaskAnim2D
+          m_TextWithWhitespace: "MaskAnim2D\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: b887a27bc2102d64bb8a0faf72d071e0, type: 3}
+        hasToggle: 1
+      - displayName: PlayerInteractor
+        name: PlayerInteractor, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: PlayerInteractor
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: PlayerInteractor
+          m_TextWithWhitespace: "PlayerInteractor\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 7c6a69fb9dce8b34a83c3611ed731104, type: 3}
+        hasToggle: 1
+      - displayName: AudioManager
+        name: AudioManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: AudioManager
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: AudioManager
+          m_TextWithWhitespace: "AudioManager\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 0b8716b92ee64564887993c295e19094, type: 3}
+        hasToggle: 1
+      - displayName: DOTweenComponent
+        name: DG.Tweening.Core.DOTweenComponent, DOTween, Version=1.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: DOTweenComponent
+          m_Image: {fileID: 1958022779231644424, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: DOTweenComponent
+          m_TextWithWhitespace: "DOTweenComponent\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: -591303064, guid: a811bde74b26b53498b4f6d872b09b6d, type: 3}
+        hasToggle: 1
+      - displayName: InfiniteBackground
+        name: InfiniteBackground, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: InfiniteBackground
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: InfiniteBackground
+          m_TextWithWhitespace: "InfiniteBackground\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: eda4b87647aafec4d800d9eb9b766bcc, type: 3}
+        hasToggle: 1
+      - displayName: MaskSlotUI
+        name: MaskSlotUI, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: MaskSlotUI
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: MaskSlotUI
+          m_TextWithWhitespace: "MaskSlotUI\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 861bcff26dda6c14d8c81ddc4713e423, type: 3}
+        hasToggle: 1
+      - displayName: MaskTable
+        name: MaskTable, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: MaskTable
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: MaskTable
+          m_TextWithWhitespace: "MaskTable\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 42b68ab79a43fee48af4bb5c98de27b4, type: 3}
+        hasToggle: 1
+      - displayName: ObjectSpawner
+        name: ObjectSpawner, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: ObjectSpawner
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: ObjectSpawner
+          m_TextWithWhitespace: "ObjectSpawner\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: e2013f1c91b57784ab7481e5393c151c, type: 3}
+        hasToggle: 1
+      - displayName: PeopleMaskTrigger
+        name: PeopleMaskTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: PeopleMaskTrigger
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: PeopleMaskTrigger
+          m_TextWithWhitespace: "PeopleMaskTrigger\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: dcabdc4cb0abe474eaeb14686dc6b2b2, type: 3}
+        hasToggle: 1
+      - displayName: MoveToTarget
+        name: MoveToTarget, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: MoveToTarget
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: MoveToTarget
+          m_TextWithWhitespace: "MoveToTarget\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 80be11e02e80e6a4cbfadaa50a97a27e, type: 3}
+        hasToggle: 1
+      - displayName: InteractText
+        name: InteractText, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: InteractText
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: InteractText
+          m_TextWithWhitespace: "InteractText\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 88daad9fe5fc67540952ec346d5a2ac6, type: 3}
+        hasToggle: 1
     unityVersion: 6000.3.6f1
     unityCount: 396
